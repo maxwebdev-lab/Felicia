@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>UNKNOWN</title>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UNKNOWN</title>
 
 <style>
 body {
@@ -20,11 +20,9 @@ body {
 .glitch {
     font-size: 2.5rem;
     margin-top: 80px;
-    position: relative;
     color: white;
     animation: flicker 2s infinite;
 }
-
 @keyframes flicker {
     0% {opacity: 1;}
     50% {opacity: 0.6;}
@@ -39,20 +37,50 @@ body {
     min-height: 60px;
 }
 
-/* button */
+/* ghost icon */
+#ghost {
+    font-size: 2rem;
+    margin-top: 30px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: 0.3s;
+}
+#ghost:hover {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+/* input & button */
+#passwordContainer {
+    display: none;
+    margin-top: 20px;
+}
+#password {
+    padding:10px; 
+    border-radius:5px; 
+    border:none;
+}
 .btn {
-    margin-top: 40px;
     padding: 12px 25px;
     border: 1px solid #fff;
     background: transparent;
     color: white;
     cursor: pointer;
     transition: 0.3s;
+    margin-top: 10px;
 }
-
 .btn:hover {
     background: white;
     color: black;
+}
+
+/* shake animation */
+@keyframes shake {
+    0% { transform: translateX(0px); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0px); }
 }
 
 /* secret */
@@ -63,13 +91,14 @@ body {
     animation: fadeIn 2s;
 }
 
-/* glow circle image */
+/* image */
 .img-box {
     margin-top: 30px;
     opacity: 0;
     animation: fadeInSlow 6s forwards;
+    position: relative;
+    display: inline-block;
 }
-
 .img-box img {
     width: 180px;
     height: 180px;
@@ -78,16 +107,34 @@ body {
     box-shadow: 0 0 20px #fff, 0 0 60px rgba(255,255,255,0.2);
 }
 
-@keyframes fadeInSlow {
-    to { opacity: 1; }
+/* holographic heart */
+#holoHeart {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 50px;
+    color: #ff4d6d;
+    text-shadow: 0 0 20px #ff4d6d, 0 0 40px #ff69b4, 0 0 60px #ff1493;
+    animation: floatHeart 2s infinite alternate, glitchHeart 1.5s infinite;
+    display: none;
+}
+@keyframes floatHeart {
+    0% { transform: translateX(-50%) translateY(0); }
+    100% { transform: translateX(-50%) translateY(-20px); }
+}
+@keyframes glitchHeart {
+    0% { transform: translateX(-50%) skew(0deg); }
+    25% { transform: translateX(-50%) skew(5deg); }
+    50% { transform: translateX(-50%) skew(-5deg); }
+    75% { transform: translateX(-50%) skew(3deg); }
+    100% { transform: translateX(-50%) skew(0deg); }
 }
 
-@keyframes fadeIn {
-    from {opacity:0;}
-    to {opacity:1;}
-}
+@keyframes fadeInSlow { to { opacity: 1; } }
+@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
 
-/* floating particles */
+/* particles */
 .particle {
     position: absolute;
     width: 2px;
@@ -96,39 +143,48 @@ body {
     opacity: 0.5;
     animation: move 10s linear infinite;
 }
-
 @keyframes move {
     from { transform: translateY(100vh); }
     to { transform: translateY(-10vh); }
 }
 </style>
-  </head>
+</head>
 
-  <body>
+<body>
 
-	<div class="glitch">FELICIA</div>
+<audio autoplay loop>
+    <source src="dark_mystery.mp3" type="audio/mpeg">
+</audio>
 
-	<div class="img-box">
-	  <img src="felicia.jpg" alt="Felicia">
-	</div>
+<div class="glitch">FELICIA</div>
 
-	<p id="typing"></p>
+<div class="img-box">
+    <img src="felicia.jpg" alt="Felicia">
+    <div id="holoHeart">💖</div>
+</div>
 
-	<button class="btn" onclick="unlock()">Do you feel it too?</button>
+<p id="typing"></p>
 
-	<div id="secret">
-	  🔐 ACCESS GRANTED...<br><br>
-	  I don’t speak loudly about love…<br>
-	  but if it’s you — I don’t walk away.<br><br>
-	  You’re not just special…<br>
-	  you’re chosen. 🖤
-	</div>
+<div id="ghost">👻 Click me</div>
+
+<div id="passwordContainer">
+    <input id="password" type="text" placeholder="Enter password...">
+    <br>
+    <button class="btn" onclick="unlock()">Unlock Secret 💀</button>
+</div>
+
+<div id="secret">
+    🔐 ACCESS GRANTED...<br><br>
+    I don’t speak loudly about love…<br>
+    but if it’s you — I don’t walk away.<br><br>
+    You’re not just special…<br>
+    you’re chosen. 🖤
+</div>
 
 <script>
 // typing
 const text = "Some connections don’t need explanation... they just exist.";
 let i = 0;
-
 function type() {
     if (i < text.length) {
         document.getElementById("typing").innerHTML += text.charAt(i);
@@ -138,26 +194,36 @@ function type() {
 }
 type();
 
-// unlock
+// show password input
+document.getElementById("ghost").onclick = function() {
+    document.getElementById("passwordContainer").style.display = "block";
+    this.style.display = "none";
+}
+
+// unlock with password + holographic heart
 function unlock() {
-    document.getElementById("secret").style.display = "block";
+    const input = document.getElementById("password");
+    if(input.value === "F&L") {
+        document.getElementById("secret").style.display = "block";
+        document.getElementById("holoHeart").style.display = "block";
+    } else {
+        input.style.animation = "shake 0.5s";
+        setTimeout(() => { input.style.animation = ""; }, 500);
+        input.value = "";
+    }
 }
 
 // particles
 function createParticle() {
     const p = document.createElement("div");
     p.classList.add("particle");
-
     p.style.left = Math.random() * 100 + "vw";
     p.style.animationDuration = (Math.random() * 5 + 5) + "s";
-
     document.body.appendChild(p);
-
     setTimeout(() => p.remove(), 10000);
 }
-
 setInterval(createParticle, 200);
 </script>
 
-  </body>
+</body>
 </html>
