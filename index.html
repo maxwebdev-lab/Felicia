@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>UNKNOWN</title>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    background: black;
+    color: #eaeaea;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* glitch effect */
+.glitch {
+    font-size: 2.5rem;
+    margin-top: 80px;
+    position: relative;
+    color: white;
+    animation: flicker 2s infinite;
+}
+
+@keyframes flicker {
+    0% {opacity: 1;}
+    50% {opacity: 0.6;}
+    100% {opacity: 1;}
+}
+
+/* typing */
+#typing {
+    margin-top: 40px;
+    font-size: 1.1rem;
+    padding: 0 20px;
+    min-height: 60px;
+}
+
+/* button */
+.btn {
+    margin-top: 40px;
+    padding: 12px 25px;
+    border: 1px solid #fff;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: white;
+    color: black;
+}
+
+/* secret */
+#secret {
+    display: none;
+    margin-top: 30px;
+    font-size: 1.2rem;
+    animation: fadeIn 2s;
+}
+
+/* glow circle image */
+.img-box {
+    margin-top: 30px;
+    opacity: 0;
+    animation: fadeInSlow 6s forwards;
+}
+
+.img-box img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    filter: grayscale(100%);
+    box-shadow: 0 0 20px #fff, 0 0 60px rgba(255,255,255,0.2);
+}
+
+@keyframes fadeInSlow {
+    to { opacity: 1; }
+}
+
+@keyframes fadeIn {
+    from {opacity:0;}
+    to {opacity:1;}
+}
+
+/* floating particles */
+.particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    opacity: 0.5;
+    animation: move 10s linear infinite;
+}
+
+@keyframes move {
+    from { transform: translateY(100vh); }
+    to { transform: translateY(-10vh); }
+}
+</style>
+  </head>
+
+  <body>
+
+	<div class="glitch">FELICIA</div>
+
+	<div class="img-box">
+	  <img src="felicia.jpg" alt="Felicia">
+	</div>
+
+	<p id="typing"></p>
+
+	<button class="btn" onclick="unlock()">Do you feel it too?</button>
+
+	<div id="secret">
+	  🔐 ACCESS GRANTED...<br><br>
+	  I don’t speak loudly about love…<br>
+	  but if it’s you — I don’t walk away.<br><br>
+	  You’re not just special…<br>
+	  you’re chosen. 🖤
+	</div>
+
+<script>
+// typing
+const text = "Some connections don’t need explanation... they just exist.";
+let i = 0;
+
+function type() {
+    if (i < text.length) {
+        document.getElementById("typing").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(type, 70);
+    }
+}
+type();
+
+// unlock
+function unlock() {
+    document.getElementById("secret").style.display = "block";
+}
+
+// particles
+function createParticle() {
+    const p = document.createElement("div");
+    p.classList.add("particle");
+
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.animationDuration = (Math.random() * 5 + 5) + "s";
+
+    document.body.appendChild(p);
+
+    setTimeout(() => p.remove(), 10000);
+}
+
+setInterval(createParticle, 200);
+</script>
+
+  </body>
+</html>
